@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public final class ConvertUtilsPlus {
@@ -103,6 +104,14 @@ public final class ConvertUtilsPlus {
         byte b = bytes[0];
         for (int i = 1; i < bytes.length; i++) {
             b = (byte) (b ^ bytes[i]);
+        }
+        return b;
+    }
+
+    public static byte getXOR(ArrayList<Byte> list) {
+        byte b = list.get(1);
+        for (int i = 2; i < list.size() - 2; i++) {
+            b = (byte) (b ^ list.get(i));
         }
         return b;
     }
