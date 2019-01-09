@@ -44,4 +44,8 @@ dependencies {
     implementation 'com.blankj:utilcode:1.22.5'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.google.guava:guava:16.0.1'
+
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
+//    implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
 }

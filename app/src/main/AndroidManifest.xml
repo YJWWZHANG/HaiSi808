@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <service android:name=".VideoService"/>
+        <service android:name=".TCP808Service"/>
     </application>
 
 </manifest>
