@@ -28,6 +28,8 @@ class TCP808Service: Service() {
     private val mTcpPort: Int = 8888
     private val mUdpPort: Int = 9999
 
+    private var mIp = "192.168.1.99"
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -44,6 +46,7 @@ class TCP808Service: Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 
     inner class UdpSendThread: Thread() {
@@ -112,7 +115,10 @@ class TCP808Service: Service() {
                 }
                 if (ConvertUtils.bytes2HexString(msgId) == "0102") {
                     mSingleThreadExecutor.execute(TcpSend8001Thread(socket.getOutputStream()))
-                    mSingleThreadExecutor.execute(TcpSend9101Thread(socket.getOutputStream()))
+                    mSingleThreadExecutor.execute(TcpSend9101Video1(socket.getOutputStream()))
+                    mSingleThreadExecutor.execute(TcpSend9101Video2(socket.getOutputStream()))
+                    mSingleThreadExecutor.execute(TcpSend9101Video3(socket.getOutputStream()))
+                    mSingleThreadExecutor.execute(TcpSend9101Video4(socket.getOutputStream()))
                 }
                 var msgLen = ConvertUtilsPlus.short2Unsigned(Bytes.toArray(mBufferList)[4].toShort())
 //                msgLen += Bytes.toArray(mBufferList)[3] and 0x03.toByte()
@@ -154,7 +160,7 @@ class TCP808Service: Service() {
         }
     }
 
-    inner class TcpSend9101Thread(var outputStream: OutputStream) : Thread() {
+    inner class TcpSend9101Video1(var outputStream: OutputStream) : Thread() {
 
         private val mCmd = ConvertUtils.hexString2Bytes(("7E 9101 0005 013900139001 001D" +
                 "ff 0102 00" + "207E").replace(" ", ""))
@@ -165,10 +171,114 @@ class TCP808Service: Service() {
             mList.add(0x7e)
             mList.addAll(ConvertUtils.hexString2Bytes("91010005013900139001001D").toTypedArray())
             mList.add(NetworkUtils.getIPAddress(true).length.toByte())
+//            mList.add(mIp.length.toByte())
             mList.addAll(NetworkUtils.getIPAddress(true).toByteArray().toTypedArray())
+//            mList.addAll(mIp.toByteArray().toTypedArray())
             mList.addAll(ConvertUtils.hexString2Bytes("1388").toTypedArray())
             mList.addAll(ConvertUtils.hexString2Bytes("1388").toTypedArray())
             mList.add(0x01)/*逻辑通道号*/
+            mList.add(0x01)/*数据类型*/
+            mList.add(0x00)/*码流类型*/
+            mList.add(0x00)/**/
+            mList.add(0x7e)
+            mList[4] = (mList.size - 15).toByte()
+            mList[mList.size - 2] = ConvertUtilsPlus.getXOR(mList)/**/
+        }
+
+        override fun run() {
+            super.run()
+//            LogUtils.e("已发送数据：" + ConvertUtils.bytes2HexString(ConvertUtils.hexString2Bytes("7E0100002E7E")))
+            LogUtils.e("已发送数据：" + ConvertUtils.bytes2HexString(Bytes.toArray(mList)))
+            LogUtils.e("已发送数据：" + String(Bytes.toArray(mList)))
+            outputStream.write(Bytes.toArray(mList))
+        }
+    }
+
+    inner class TcpSend9101Video2(var outputStream: OutputStream) : Thread() {
+
+        private val mCmd = ConvertUtils.hexString2Bytes(("7E 9101 0005 013900139001 001D" +
+                "ff 0102 00" + "207E").replace(" ", ""))
+
+        private var mList: ArrayList<Byte> = ArrayList()
+
+        init {
+            mList.add(0x7e)
+            mList.addAll(ConvertUtils.hexString2Bytes("91010005013900139001001D").toTypedArray())
+            mList.add(NetworkUtils.getIPAddress(true).length.toByte())
+//            mList.add(mIp.length.toByte())
+            mList.addAll(NetworkUtils.getIPAddress(true).toByteArray().toTypedArray())
+//            mList.addAll(mIp.toByteArray().toTypedArray())
+            mList.addAll(ConvertUtils.hexString2Bytes("1389").toTypedArray())
+            mList.addAll(ConvertUtils.hexString2Bytes("1389").toTypedArray())
+            mList.add(0x02)/*逻辑通道号*/
+            mList.add(0x01)/*数据类型*/
+            mList.add(0x00)/*码流类型*/
+            mList.add(0x00)/**/
+            mList.add(0x7e)
+            mList[4] = (mList.size - 15).toByte()
+            mList[mList.size - 2] = ConvertUtilsPlus.getXOR(mList)/**/
+        }
+
+        override fun run() {
+            super.run()
+//            LogUtils.e("已发送数据：" + ConvertUtils.bytes2HexString(ConvertUtils.hexString2Bytes("7E0100002E7E")))
+            LogUtils.e("已发送数据：" + ConvertUtils.bytes2HexString(Bytes.toArray(mList)))
+            LogUtils.e("已发送数据：" + String(Bytes.toArray(mList)))
+            outputStream.write(Bytes.toArray(mList))
+        }
+    }
+
+    inner class TcpSend9101Video3(var outputStream: OutputStream) : Thread() {
+
+        private val mCmd = ConvertUtils.hexString2Bytes(("7E 9101 0005 013900139001 001D" +
+                "ff 0102 00" + "207E").replace(" ", ""))
+
+        private var mList: ArrayList<Byte> = ArrayList()
+
+        init {
+            mList.add(0x7e)
+            mList.addAll(ConvertUtils.hexString2Bytes("91010005013900139001001D").toTypedArray())
+            mList.add(NetworkUtils.getIPAddress(true).length.toByte())
+//            mList.add(mIp.length.toByte())
+            mList.addAll(NetworkUtils.getIPAddress(true).toByteArray().toTypedArray())
+//            mList.addAll(mIp.toByteArray().toTypedArray())
+            mList.addAll(ConvertUtils.hexString2Bytes("138A").toTypedArray())
+            mList.addAll(ConvertUtils.hexString2Bytes("138A").toTypedArray())
+            mList.add(0x03)/*逻辑通道号*/
+            mList.add(0x01)/*数据类型*/
+            mList.add(0x00)/*码流类型*/
+            mList.add(0x00)/**/
+            mList.add(0x7e)
+            mList[4] = (mList.size - 15).toByte()
+            mList[mList.size - 2] = ConvertUtilsPlus.getXOR(mList)/**/
+        }
+
+        override fun run() {
+            super.run()
+//            LogUtils.e("已发送数据：" + ConvertUtils.bytes2HexString(ConvertUtils.hexString2Bytes("7E0100002E7E")))
+            LogUtils.e("已发送数据：" + ConvertUtils.bytes2HexString(Bytes.toArray(mList)))
+            LogUtils.e("已发送数据：" + String(Bytes.toArray(mList)))
+            outputStream.write(Bytes.toArray(mList))
+        }
+    }
+
+    inner class TcpSend9101Video4(var outputStream: OutputStream) : Thread() {
+
+        private val mCmd = ConvertUtils.hexString2Bytes(("7E 9101 0005 013900139001 001D" +
+                "ff 0102 00" + "207E").replace(" ", ""))
+
+        private var mList: ArrayList<Byte> = ArrayList()
+
+        init {
+            mList.add(0x7e)
+            mList.addAll(ConvertUtils.hexString2Bytes("91010005013900139001001D").toTypedArray())
+            mList.add(NetworkUtils.getIPAddress(true).length.toByte())
+//            mList.add(mIp.length.toByte())
+            mList.addAll(NetworkUtils.getIPAddress(true).toByteArray().toTypedArray())
+//            mList.addAll(mIp.toByteArray().toTypedArray())
+            mList.addAll(ConvertUtils.hexString2Bytes("138B").toTypedArray())
+            mList.addAll(ConvertUtils.hexString2Bytes("138B").toTypedArray())
+            mList.add(0x04)/*逻辑通道号*/
             mList.add(0x01)/*数据类型*/
             mList.add(0x00)/*码流类型*/
             mList.add(0x00)/**/

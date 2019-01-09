@@ -12,7 +12,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.*
 import java.net.*
-import java.nio.channels.Channel
 import java.util.*
 import java.util.concurrent.*
 import kotlin.experimental.and
@@ -156,7 +155,7 @@ class VideoService: Service() {
                         when(tag) {
                             0.toByte() -> {     //原子包
                                 mDataBufferList.addAll(data.toTypedArray())
-                                EventBus.getDefault().post(SendVideoEvent(Bytes.toArray(mDataBufferList)))
+                                EventBus.getDefault().post(ShowVideo1Event(Bytes.toArray(mDataBufferList)))
                                 mDataBufferList.clear()
 //                                LogUtils.e("原子包-显示视频")
                             }
@@ -165,7 +164,7 @@ class VideoService: Service() {
                             }
                             2.toByte() -> {     //最后一个包
                                 mDataBufferList.addAll(data.toTypedArray())
-                                EventBus.getDefault().post(SendVideoEvent(Bytes.toArray(mDataBufferList)))
+                                EventBus.getDefault().post(ShowVideo1Event(Bytes.toArray(mDataBufferList)))
                                 mDataBufferList.clear()
 //                                LogUtils.e("显示视频")
                             }

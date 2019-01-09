@@ -3,5 +3,5 @@ package com.guoyee.haisi808
 /**
  *创建时间:2018/12/21 11:59
  */
-class SendVideoEvent(var data: ByteArray) {
+class ShowVideo4Event(var data: ByteArray) {
 }

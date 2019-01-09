@@ -12,6 +12,11 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         Utils.init(this)
-        ServiceUtils.startService(VideoService::class.java)
+//        ServiceUtils.startService(VideoService::class.java)
+        ServiceUtils.startService(TCP808Service::class.java)
+        ServiceUtils.startService(TCP1078Service1::class.java)
+        ServiceUtils.startService(TCP1078Service2::class.java)
+        ServiceUtils.startService(TCP1078Service3::class.java)
+        ServiceUtils.startService(TCP1078Service4::class.java)
     }
 }
