@@ -37,6 +37,7 @@ class TCP1078Service3: Service() {
         super.onCreate()
         EventBus.getDefault().register(this)
         TcpVideoThread().start()
+        VideoParseThread().start()
         LogUtils.e("TCP1078_3服务开启")
     }
 
@@ -57,7 +58,6 @@ class TCP1078Service3: Service() {
                     val socket = mTcpVideoSocket.accept()
                     LogUtils.e("TCP1078_3视频已经成功连接")
                     ToastUtils.showLong("TCP1078_3视频已经成功连接")
-                    VideoParseThread().start()
                     Thread(Runnable {
                         try {
                             while (!socket.isClosed) {
@@ -68,7 +68,7 @@ class TCP1078Service3: Service() {
                                     System.arraycopy(buf, 0, byt, 0, len)
                                     mVideoQueue.offer(byt)
                                 }
-                                LogUtils.e("TCP1078_3接收")
+//                                LogUtils.e("TCP1078_3接收")
                             }
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -86,12 +86,12 @@ class TCP1078Service3: Service() {
 
         private var mVideoBufferList: ArrayList<Byte> = ArrayList()
         private var mDataBufferList: ArrayList<Byte> = ArrayList()
-        private var mFileOutputStream: FileOutputStream
-
-        init {
-            val file = File(Environment.getExternalStorageDirectory().absoluteFile.path + "/vvvv6666.mp4")
-            mFileOutputStream = FileOutputStream(file, true)
-        }
+//        private var mFileOutputStream: FileOutputStream
+//
+//        init {
+//            val file = File(Environment.getExternalStorageDirectory().absoluteFile.path + "/vvvv6666.mp4")
+//            mFileOutputStream = FileOutputStream(file, true)
+//        }
 
         override fun run() {
             super.run()
