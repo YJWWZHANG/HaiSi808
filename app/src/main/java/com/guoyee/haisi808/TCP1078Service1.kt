@@ -68,7 +68,7 @@ class TCP1078Service1: Service() {
                                     System.arraycopy(buf, 0, byt, 0, len)
                                     mVideoQueue.offer(byt)
                                 }
-//                                LogUtils.e("接收")
+                                LogUtils.e("TCP1078_1接收")
                             }
                         } catch (e: IOException) {
                             e.printStackTrace()

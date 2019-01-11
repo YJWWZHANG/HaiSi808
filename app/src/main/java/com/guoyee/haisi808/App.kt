@@ -14,8 +14,8 @@ class App: Application() {
         Utils.init(this)
         ServiceUtils.startService(TCP808Service::class.java)
         ServiceUtils.startService(TCP1078Service1::class.java)
-//        ServiceUtils.startService(TCP1078Service2::class.java)
-//        ServiceUtils.startService(TCP1078Service3::class.java)
-//        ServiceUtils.startService(TCP1078Service4::class.java)
+        ServiceUtils.startService(TCP1078Service2::class.java)
+        ServiceUtils.startService(TCP1078Service3::class.java)
+        ServiceUtils.startService(TCP1078Service4::class.java)
     }
 }
